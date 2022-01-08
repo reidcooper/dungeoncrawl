@@ -48,16 +48,15 @@ impl MapBuilder {
                 room.for_each(|p| {
                     // Both if statements are equivalent
                     // Option 1
-                    // if self.map.in_bounds(p) {
-                    //     // if p.x > 0 && p.x < SCREEN_WIDTH && p.y > 0 && p.y < SCREEN_HEIGHT {
-                    //     let idx = map_idx(p.x, p.y);
-                    //     self.map.tiles[idx] = TileType::Floor;
-                    // }
-
-                    // Option 2
-                    if let Some(idx) = self.map.try_idx(p) {
+                    if p.x > 0 && p.x < SCREEN_WIDTH && p.y > 0 && p.y < SCREEN_HEIGHT {
+                        let idx = map_idx(p.x, p.y);
                         self.map.tiles[idx] = TileType::Floor;
                     }
+
+                    // Option 2
+                    // if let Some(idx) = self.map.try_idx(p) {
+                    //     self.map.tiles[idx] = TileType::Floor;
+                    // }
                 });
 
                 self.rooms.push(room)
@@ -95,10 +94,10 @@ impl MapBuilder {
 
             if rng.range(0, 2) == 1 {
                 self.apply_horizontal_tunnel(prev.x, new.x, prev.y);
-                self.apply_vertical_tunnel(prev.y, new.y, prev.x);
+                self.apply_vertical_tunnel(prev.y, new.y, new.x);
             } else {
                 self.apply_vertical_tunnel(prev.y, new.y, prev.x);
-                self.apply_horizontal_tunnel(prev.x, new.x, prev.y);
+                self.apply_horizontal_tunnel(prev.x, new.x, new.y);
             }
         }
     }
